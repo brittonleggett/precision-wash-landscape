@@ -210,16 +210,25 @@
       letter-spacing: 0.005em;
       font-size: clamp(2.6rem, 8vw, 5.2rem);
       text-wrap: balance;
-      background: linear-gradient(178deg, #ffffff 0%, var(--steel) 38%, #aebccb 60%, var(--steel) 78%, #ffffff 100%);
+      background: linear-gradient(100deg, var(--steel) 0%, var(--steel) 32%, #ffffff 44%, var(--steel) 56%, var(--steel) 100%);
+      background-size: 220% 100%;
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
+      animation: shine 7s ease-in-out infinite;
     }
     .hero h1 .accent {
-      background: linear-gradient(180deg, var(--azure-bright), var(--azure));
+      background: linear-gradient(100deg, var(--azure) 0%, var(--azure) 32%, var(--azure-bright) 44%, #ffffff 50%, var(--azure-bright) 56%, var(--azure) 68%, var(--azure) 100%);
+      background-size: 220% 100%;
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
+      animation: shine 7s ease-in-out infinite;
+    }
+    @keyframes shine {
+      0% { background-position: 180% 0; }
+      50% { background-position: -80% 0; }
+      100% { background-position: 180% 0; }
     }
     .hero .lede { margin-top: var(--space-2); font-size: 1.15rem; }
     .hero-ctas {
@@ -444,8 +453,8 @@
       <h1>Precision<br>Wash <span class="accent">&amp;</span> Landscape</h1>
       <p class="lede">Pressure &amp; soft washing, flowerbed work, and junk hauling — done right, the first time. Family-run, serving Ouachita and Lincoln Parish, Louisiana.</p>
       <div class="hero-ctas">
-        <a class="btn btn-primary" href="tel:13188058288">Call Jase — 318-805-8288</a>
-        <a class="btn btn-ghost" href="tel:13186148665">Call Garrett — 318-614-8665</a>
+        <a class="btn btn-primary" href="tel:13188058288">Call or Text Jase — 318-805-8288</a>
+        <a class="btn btn-ghost" href="tel:13186148665">Call or Text Garrett — 318-614-8665</a>
       </div>
       <div class="hero-meta">
         <span><strong>Free</strong> estimates on every job</span>
