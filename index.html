@@ -460,6 +460,186 @@
       color: var(--mist);
     }
 
+
+    /* ---------- before/after slider ---------- */
+    .gallery-item .ba {
+      position: relative;
+      aspect-ratio: 4 / 3;
+      overflow: hidden;
+      cursor: ew-resize;
+      touch-action: none;
+      --pos: 50%;
+    }
+    .ba img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      -webkit-user-drag: none;
+      user-select: none;
+      pointer-events: none;
+    }
+    .ba .ba-after { z-index: 1; }
+    .ba .ba-before { z-index: 2; clip-path: inset(0 calc(100% - var(--pos)) 0 0); }
+    .ba .ba-handle {
+      position: absolute;
+      top: 0; bottom: 0;
+      left: var(--pos);
+      width: 2px;
+      background: var(--azure-bright);
+      z-index: 3;
+      transform: translateX(-1px);
+      box-shadow: 0 0 10px rgba(127, 192, 255, 0.7);
+      pointer-events: none;
+    }
+    .ba .ba-handle::after {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: var(--azure);
+      border: 2px solid var(--steel);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    }
+    .ba .ba-handle-arrows {
+      position: absolute;
+      top: 50%; left: var(--pos);
+      transform: translate(-50%, -50%);
+      z-index: 4;
+      color: var(--ink);
+      font-size: 0.8rem;
+      font-weight: 900;
+      pointer-events: none;
+    }
+    .ba .ba-tag {
+      position: absolute;
+      top: 0.6rem;
+      z-index: 4;
+      font-size: 0.65rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.25rem 0.55rem;
+      border-radius: 999px;
+      background: rgba(5, 7, 10, 0.65);
+      color: var(--steel);
+      pointer-events: none;
+    }
+    .ba .ba-tag-before { left: 0.6rem; }
+    .ba .ba-tag-after { right: 0.6rem; }
+
+    /* ---------- process ---------- */
+    .process-grid {
+      margin-top: var(--space-4);
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-3);
+    }
+    @media (max-width: 780px) {
+      .process-grid { grid-template-columns: 1fr; }
+    }
+    .process-step {
+      border: 1px solid var(--panel-line);
+      background: var(--panel);
+      border-radius: var(--radius);
+      padding: var(--space-3);
+    }
+    .process-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 50%;
+      background: var(--azure);
+      color: #fff;
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: 1.1rem;
+      margin-bottom: 0.75rem;
+    }
+    .process-step h3 {
+      font-size: 1rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      color: var(--steel);
+    }
+    .process-step p {
+      margin-top: 0.4rem;
+      font-size: 0.9rem;
+      color: var(--mist);
+    }
+
+    /* ---------- testimonial ---------- */
+    .testimonial-section { padding-block: var(--space-4); }
+    .testimonial {
+      max-width: 700px;
+      margin-inline: auto;
+      text-align: center;
+    }
+    .testimonial p {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-style: italic;
+      font-size: clamp(1.2rem, 3vw, 1.6rem);
+      color: var(--steel);
+      text-wrap: balance;
+    }
+    .testimonial cite {
+      display: block;
+      margin-top: 0.75rem;
+      font-style: normal;
+      font-size: 0.8rem;
+      color: var(--mist-dim);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    /* ---------- faq ---------- */
+    .faq-list {
+      margin-top: var(--space-4);
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      max-width: 780px;
+    }
+    .faq-item {
+      border: 1px solid var(--panel-line);
+      background: var(--panel);
+      border-radius: var(--radius);
+      padding: 1rem 1.25rem;
+    }
+    .faq-item summary {
+      cursor: pointer;
+      font-weight: 700;
+      color: var(--steel);
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+    .faq-item summary::-webkit-details-marker { display: none; }
+    .faq-item summary::after {
+      content: '+';
+      font-size: 1.3rem;
+      color: var(--azure-bright);
+      flex: none;
+      transition: transform 0.2s ease;
+    }
+    .faq-item[open] summary::after { transform: rotate(45deg); }
+    .faq-item p {
+      margin-top: 0.75rem;
+      color: var(--mist);
+      font-size: 0.92rem;
+      line-height: 1.6;
+    }
+
     @media (prefers-reduced-motion: reduce) {
       * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
     }
@@ -577,39 +757,143 @@
     </div>
   </section>
 
+  <section class="process-section">
+    <div class="wrap">
+      <p class="eyebrow">How it works</p>
+      <h2 class="section-title">Getting your property clean is easy</h2>
+      <div class="process-grid">
+        <div class="process-step">
+          <span class="process-num">1</span>
+          <h3>Call or text</h3>
+          <p>Reach out to Jase or Garrett with what you need done. We'll ask a few quick questions and get you a free estimate.</p>
+        </div>
+        <div class="process-step">
+          <span class="process-num">2</span>
+          <h3>We schedule the job</h3>
+          <p>Once you approve the estimate, we'll find a time that works for you — no long waits, no runaround.</p>
+        </div>
+        <div class="process-step">
+          <span class="process-num">3</span>
+          <h3>Enjoy the results</h3>
+          <p>We show up, do the work, and leave your property looking brand new. You don't have to lift a finger.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="gallery-section">
     <div class="wrap">
       <p class="eyebrow">Recent work</p>
-      <h2 class="section-title">A few jobs from the field</h2>
+      <h2 class="section-title">See the transformation — drag to compare</h2>
       <div class="gallery-grid">
         <figure class="gallery-item">
-          <img src="images/siding-before-after.jpg" alt="Vinyl siding pressure washing, before and after" loading="lazy">
+          <div class="ba" data-ba tabindex="0" role="slider" aria-label="Drag to compare before and after: Vinyl siding pressure washing" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
+            <img class="ba-after" src="images/siding-after.jpg" alt="After: Vinyl siding pressure washing">
+            <img class="ba-before" src="images/siding-before.jpg" alt="Before: Vinyl siding pressure washing">
+            <div class="ba-handle"></div>
+            <span class="ba-handle-arrows">&#8596;</span>
+            <span class="ba-tag ba-tag-before">Before</span>
+            <span class="ba-tag ba-tag-after">After</span>
+          </div>
           <figcaption>Vinyl siding pressure washing, before and after</figcaption>
         </figure>
         <figure class="gallery-item">
-          <img src="images/patio-before-after.jpg" alt="Flagstone patio pressure washing, before and after" loading="lazy">
+          <div class="ba" data-ba tabindex="0" role="slider" aria-label="Drag to compare before and after: Flagstone patio pressure washing" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
+            <img class="ba-after" src="images/patio-after.jpg" alt="After: Flagstone patio pressure washing">
+            <img class="ba-before" src="images/patio-before.jpg" alt="Before: Flagstone patio pressure washing">
+            <div class="ba-handle"></div>
+            <span class="ba-handle-arrows">&#8596;</span>
+            <span class="ba-tag ba-tag-before">Before</span>
+            <span class="ba-tag ba-tag-after">After</span>
+          </div>
           <figcaption>Flagstone patio pressure washing, before and after</figcaption>
         </figure>
         <figure class="gallery-item">
-          <img src="images/stairway-before-after.jpg" alt="Stone stairway pressure washing, before and after" loading="lazy">
+          <div class="ba" data-ba tabindex="0" role="slider" aria-label="Drag to compare before and after: Stone stairway pressure washing" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
+            <img class="ba-after" src="images/stairway-after.jpg" alt="After: Stone stairway pressure washing">
+            <img class="ba-before" src="images/stairway-before.jpg" alt="Before: Stone stairway pressure washing">
+            <div class="ba-handle"></div>
+            <span class="ba-handle-arrows">&#8596;</span>
+            <span class="ba-tag ba-tag-before">Before</span>
+            <span class="ba-tag ba-tag-after">After</span>
+          </div>
           <figcaption>Stone stairway pressure washing, before and after</figcaption>
         </figure>
         <figure class="gallery-item">
-          <img src="images/walkway-before-after.jpg" alt="Concrete walkway pressure washing, before and after" loading="lazy">
+          <div class="ba" data-ba tabindex="0" role="slider" aria-label="Drag to compare before and after: Concrete walkway pressure washing" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
+            <img class="ba-after" src="images/walkway-after.jpg" alt="After: Concrete walkway pressure washing">
+            <img class="ba-before" src="images/walkway-before.jpg" alt="Before: Concrete walkway pressure washing">
+            <div class="ba-handle"></div>
+            <span class="ba-handle-arrows">&#8596;</span>
+            <span class="ba-tag ba-tag-before">Before</span>
+            <span class="ba-tag ba-tag-after">After</span>
+          </div>
           <figcaption>Concrete walkway pressure washing, before and after</figcaption>
         </figure>
         <figure class="gallery-item">
-          <img src="images/flowerbed-pinestraw.jpg" alt="Flowerbed refresh with fresh pine straw" loading="lazy">
-          <figcaption>Flowerbed refresh with fresh pine straw</figcaption>
+          <div class="ba" data-ba tabindex="0" role="slider" aria-label="Drag to compare before and after: Flowerbed refresh with fresh pine straw" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
+            <img class="ba-after" src="images/flowerbed-pinestraw-after.jpg" alt="After: Flowerbed refresh with fresh pine straw">
+            <img class="ba-before" src="images/flowerbed-pinestraw-before.jpg" alt="Before: Flowerbed refresh with fresh pine straw">
+            <div class="ba-handle"></div>
+            <span class="ba-handle-arrows">&#8596;</span>
+            <span class="ba-tag ba-tag-before">Before</span>
+            <span class="ba-tag ba-tag-after">After</span>
+          </div>
+          <figcaption>Flowerbed refresh with fresh pine straw, before and after</figcaption>
         </figure>
         <figure class="gallery-item">
-          <img src="images/flowerbed-roses.jpg" alt="Front flowerbed cleanup and fresh mulch" loading="lazy">
-          <figcaption>Front flowerbed cleanup and fresh mulch</figcaption>
+          <div class="ba" data-ba tabindex="0" role="slider" aria-label="Drag to compare before and after: Front flowerbed cleanup and fresh mulch" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
+            <img class="ba-after" src="images/flowerbed-roses-after.jpg" alt="After: Front flowerbed cleanup and fresh mulch">
+            <img class="ba-before" src="images/flowerbed-roses-before.jpg" alt="Before: Front flowerbed cleanup and fresh mulch">
+            <div class="ba-handle"></div>
+            <span class="ba-handle-arrows">&#8596;</span>
+            <span class="ba-tag ba-tag-before">Before</span>
+            <span class="ba-tag ba-tag-after">After</span>
+          </div>
+          <figcaption>Front flowerbed cleanup and fresh mulch, before and after</figcaption>
         </figure>
         <figure class="gallery-item">
           <img src="images/front-entry.jpg" alt="Pressure washed front entry and refreshed flowerbeds, Ouachita Parish LA" loading="lazy">
           <figcaption>Pressure washed front entry and refreshed flowerbeds, Ouachita Parish LA</figcaption>
         </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="testimonial-section">
+    <div class="wrap">
+      <blockquote class="testimonial">
+        <p>"Looks clean and fresh, love the pine straw addition!"</p>
+        <cite>Cindy Young, on Facebook</cite>
+      </blockquote>
+    </div>
+  </section>
+
+  <section class="faq-section">
+    <div class="wrap">
+      <p class="eyebrow">Questions</p>
+      <h2 class="section-title">Frequently asked questions</h2>
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary>Do I need to be home, or provide water and power?</summary>
+          <p>Most jobs just need access to an outdoor water spigot and outlet — we bring our own equipment. You don't need to be home; just let us know how to access the areas being cleaned.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Is pressure washing safe for my siding, roof, or paint?</summary>
+          <p>Yes. We use soft washing — lower pressure with the right cleaning solution — on delicate surfaces like siding, roofing, and painted areas, and save higher pressure for tougher surfaces like concrete and stone.</p>
+        </details>
+        <details class="faq-item">
+          <summary>How often should I get my house or driveway washed?</summary>
+          <p>Most homes in Louisiana's humidity benefit from a wash once or twice a year to stay ahead of mold, algae, and pollen buildup. We're happy to take a look and give you an honest recommendation.</p>
+        </details>
+        <details class="faq-item">
+          <summary>What kind of junk do you haul away?</summary>
+          <p>Tree limbs, old furniture, yard debris, and general household junk. If you're not sure whether we can take it, just call or text and describe what you've got.</p>
+        </details>
+        <details class="faq-item">
+          <summary>How much does it cost?</summary>
+          <p>Every property is different, so we give free, no-obligation estimates before any work starts. Call or text Jase or Garrett with a few photos or details and we'll get you a number fast.</p>
+        </details>
       </div>
     </div>
   </section>
@@ -703,6 +987,34 @@
   } else {
     requestAnimationFrame(frame);
   }
+})();
+</script>
+
+<script>
+(function () {
+  document.querySelectorAll('[data-ba]').forEach(function (el) {
+    function setPos(clientX) {
+      var rect = el.getBoundingClientRect();
+      var pct = ((clientX - rect.left) / rect.width) * 100;
+      pct = Math.max(0, Math.min(100, pct));
+      el.style.setProperty('--pos', pct + '%');
+      el.setAttribute('aria-valuenow', Math.round(pct));
+    }
+    el.addEventListener('pointermove', function (e) { setPos(e.clientX); });
+    el.addEventListener('pointerdown', function (e) {
+      setPos(e.clientX);
+      try { el.setPointerCapture(e.pointerId); } catch (err) {}
+    });
+    el.addEventListener('keydown', function (e) {
+      var cur = parseFloat(getComputedStyle(el).getPropertyValue('--pos')) || 50;
+      if (e.key === 'ArrowLeft') { cur = Math.max(0, cur - 5); }
+      else if (e.key === 'ArrowRight') { cur = Math.min(100, cur + 5); }
+      else { return; }
+      el.style.setProperty('--pos', cur + '%');
+      el.setAttribute('aria-valuenow', Math.round(cur));
+      e.preventDefault();
+    });
+  });
 })();
 </script>
 </body>
