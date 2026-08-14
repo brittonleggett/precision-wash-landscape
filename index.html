@@ -369,10 +369,13 @@
     .contact-grid {
       margin-top: var(--space-4);
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       gap: var(--space-3);
     }
-    @media (max-width: 640px) {
+    @media (max-width: 860px) {
+      .contact-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 560px) {
       .contact-grid { grid-template-columns: 1fr; }
     }
     .contact-card {
@@ -625,6 +628,11 @@
           <span class="role">Owner</span>
           <span class="name">Garrett Smith</span>
           <span class="num">318-614-8665</span>
+        </a>
+        <a class="contact-card" href="https://www.facebook.com/profile.php?id=61590393561873" target="_blank" rel="noopener noreferrer" style="text-decoration:none;">
+          <span class="role">Follow us</span>
+          <span class="name">Facebook</span>
+          <span class="num">Precision Wash &amp; Landscape</span>
         </a>
       </div>
     </div>
