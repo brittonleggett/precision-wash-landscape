@@ -3,10 +3,11 @@
 Static site for **precisionwashlandscape.com**, served by GitHub Pages from the root of
 this repository.
 
-> ## ⚠️ HTTPS is not working yet
-> The site is **live over HTTP** (the domain suspension was fixed 2026-09-13), but
-> `https://` still serves a mismatched `*.github.io` certificate. One 30-second fix in
-> GitHub Pages settings: **[docs/DOMAIN_AND_HOSTING_FIX.md](docs/DOMAIN_AND_HOSTING_FIX.md)**
+> ## ✅ Live and secure
+> <https://precisionwashlandscape.com> — HTTPS enforced, valid Let's Encrypt certificate,
+> `http`→`https` and `www`→apex both 301. Verified 2026-09-13.
+> Next step is Google Search Console:
+> **[docs/GOOGLE_SEARCH_CONSOLE_SETUP.md](docs/GOOGLE_SEARCH_CONSOLE_SETUP.md)**
 
 ---
 
@@ -136,7 +137,7 @@ Start here:
 
 | Doc | What it covers |
 |---|---|
-| **[DOMAIN_AND_HOSTING_FIX.md](docs/DOMAIN_AND_HOSTING_FIX.md)** | ⚠️ **Read first** — hosting status and the outstanding HTTPS fix |
+| [DOMAIN_AND_HOSTING_FIX.md](docs/DOMAIN_AND_HOSTING_FIX.md) | Hosting status (all resolved) + exactly how the cert was issued, if it ever breaks again |
 | [SEO_AUDIT.md](docs/SEO_AUDIT.md) | Full audit, what changed, prioritised actions |
 | [GOOGLE_SEARCH_CONSOLE_SETUP.md](docs/GOOGLE_SEARCH_CONSOLE_SETUP.md) | Verification, sitemap, indexing, monitoring, Bing |
 | [GOOGLE_BUSINESS_PROFILE.md](docs/GOOGLE_BUSINESS_PROFILE.md) | Profile setup, NAP consistency, getting reviews ethically |

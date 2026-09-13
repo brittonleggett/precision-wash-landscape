@@ -4,22 +4,19 @@
 **Site:** https://precisionwashlandscape.com (GitHub Pages, static HTML)
 **Repo:** brittonleggett/precision-wash-landscape
 
-> ### Status update — 2026-09-13
-> **The domain suspension is fixed and the site is live over HTTP.** Britton verified
-> the WHOIS registrant contact on 2026-09-13; nameservers returned to normal, DNS now
-> points at GitHub Pages, and all 7 pages plus robots.txt, sitemap.xml, CSS and images
-> were re-verified serving 200 from the real domain, byte-identical to the local build.
+> ### Status update — 2026-09-13: hosting fully resolved ✅
+> The domain suspension is fixed **and HTTPS is live.** Let's Encrypt certificate issued
+> for `precisionwashlandscape.com` (covers `www` too, valid to 2026-12-12, auto-renews),
+> Enforce HTTPS enabled, `http`→`https` and `www`→apex both 301 in a single hop.
 >
-> **One hosting task remains: HTTPS.** `https://` still serves a `*.github.io`
-> certificate because GitHub never queued one (its DNS check last ran while the domain
-> was dead). Fix is a 30-second remove/re-add of the custom domain in GitHub Pages
-> settings → [DOMAIN_AND_HOSTING_FIX.md](DOMAIN_AND_HOSTING_FIX.md).
-> **Do not start Search Console until HTTPS works** — Google's first crawl should find
-> the `https://` version.
+> All 7 pages plus robots.txt, sitemap.xml, CSS and images re-verified over `https://`
+> with a valid certificate chain, byte-identical to the local build. Zero insecure
+> subresources; the live page reports `isSecureContext: true`.
 >
-> *Original finding, for the record: the domain was suspended by Namecheap on 2026-08-29
-> for unverified WHOIS registrant details, leaving no working URL for the site for 15
-> days.*
+> **No hosting work is outstanding. Search Console is now unblocked.**
+>
+> *For the record: the domain was suspended by Namecheap on 2026-08-29 for unverified
+> WHOIS registrant details, leaving no working URL for 15 days. Fixed 2026-09-13.*
 
 ---
 
@@ -27,9 +24,9 @@
 
 | Check | Status | Detail |
 |---|---|---|
-| **HTTP status** | ✅ Verified live | All 7 pages 200 over HTTP on the real domain, byte-identical to local. Unknown paths return a real 404 with the branded page. `/docs/`, `/tools/`, `/README.md` correctly 404 (excluded from the build). |
-| **HTTPS** | ❌ **Outstanding** | Serves a `*.github.io` cert — mismatch, so browsers warn. GitHub has no certificate object for this domain yet. Needs a custom-domain remove/re-add in Pages settings, then tick Enforce HTTPS. **The last blocking item.** |
-| **Canonical domain** | ✅ Correct, ⚠️ not yet enforced | Apex (`precisionwashlandscape.com`, no `www`) in `CNAME` and every canonical tag. DNS for apex + `www` both verified correct. `http`→`https` collapse waits on Enforce HTTPS. |
+| **HTTP status** | ✅ Verified live over HTTPS | All 7 pages 200 over HTTP on the real domain, byte-identical to local. Unknown paths return a real 404 with the branded page. `/docs/`, `/tools/`, `/README.md` correctly 404 (excluded from the build). |
+| **HTTPS** | ✅ **Working** | Let's Encrypt cert, `CN=precisionwashlandscape.com`, covers apex + `www`, valid to 2026-12-12, auto-renews. Enforce HTTPS on. Valid chain (`ssl_verify_result=0`) verified on every URL. |
+| **Canonical domain** | ✅ **Enforced** | Apex, no `www`. `http`→`https` and `www`→apex each 301 in one hop, verified live. Canonical tags, `CNAME` and actual redirects all agree. |
 | **Robots** | ✅ Verified live | `/robots.txt` allows all crawlers, disallows only `/docs/` and `/tools/` (repo housekeeping, unlinked), and references the sitemap on the last line. |
 | **Sitemap** | ✅ Verified live | 7 canonical, indexable, 200-status URLs with `lastmod`. No redirects, no 404s, no noindex pages, no dev routes. Verified programmatically against the canonical tag of every page — zero drift in either direction. |
 | **Noindex issues** | ✅ Correct | Exactly one page is `noindex, follow` — `/404.html` — and it's correctly excluded from the sitemap. No accidental noindex anywhere. |
@@ -228,8 +225,8 @@ actually present.
 | **Sitemap submitted** | ❌ Not submitted. |
 | **Indexing status** | ❌ Almost certainly not indexed — the domain was unreachable for its first 15 days of life, so Google has had nothing to crawl. |
 
-**Sequencing:** finish HTTPS first, then verify Search Console. Verifying while the site
-only answers on `http://` risks Google settling on the wrong protocol as canonical.
+**Unblocked as of 2026-09-13** — HTTPS is live, so Google's first crawl will land on the
+`https://` version. Search Console verification is now the top remaining action.
 
 Full click-by-click walkthrough: [GOOGLE_SEARCH_CONSOLE_SETUP.md](GOOGLE_SEARCH_CONSOLE_SETUP.md)
 
@@ -240,10 +237,8 @@ Full click-by-click walkthrough: [GOOGLE_SEARCH_CONSOLE_SETUP.md](GOOGLE_SEARCH_
 ### HIGH — do these first
 
 1. ~~**Un-suspend the domain.**~~ ✅ **Done 2026-09-13.**
-2. **Get HTTPS working.** DNS is already correct. Remove and re-add the custom domain in
-   GitHub Pages settings to make GitHub issue the certificate, then tick Enforce HTTPS.
-   *(Britton, 30 seconds + up to an hour of waiting)* →
-   [DOMAIN_AND_HOSTING_FIX.md](DOMAIN_AND_HOSTING_FIX.md) — **this is now the blocker**
+2. ~~**Get HTTPS working.**~~ ✅ **Done 2026-09-13** — certificate issued, Enforce HTTPS on.
+   **Hosting is finished. Nothing is blocking Search Console.**
 3. **Create the Google Business Profile.** For a service-area home-services business
    this outranks the website in importance for actual phone calls. *(Britton, ~30 min)* →
    [GOOGLE_BUSINESS_PROFILE.md](GOOGLE_BUSINESS_PROFILE.md)
@@ -279,8 +274,8 @@ Full click-by-click walkthrough: [GOOGLE_SEARCH_CONSOLE_SETUP.md](GOOGLE_SEARCH_
 
 | Goal | Status |
 |---|---|
-| **Crawlable** | ✅ **Verified live over HTTP** — ⚠️ HTTPS pending |
-| **Indexable** | ✅ **Verified live over HTTP** — ⚠️ HTTPS pending |
+| **Crawlable** | ✅ **Verified live over HTTPS** |
+| **Indexable** | ✅ **Verified live over HTTPS** |
 | **Fast** | ✅ 66ms DCL, 1 request, CLS 0, no fonts, no third-party JS |
 | **Mobile-friendly** | ✅ Fixed a real 247px overflow bug; verified 320–860px |
 | **Locally relevant** | ✅ Genuine regional content, honest service area |

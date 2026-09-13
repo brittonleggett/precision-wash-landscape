@@ -1,8 +1,8 @@
 # Google Search Console — setup and ongoing workflow
 
-**Prerequisite:** the site must actually load first. Work through
-[DOMAIN_AND_HOSTING_FIX.md](DOMAIN_AND_HOSTING_FIX.md) before anything on this page.
-Search Console verification will fail while the domain is suspended.
+**Prerequisite: ✅ met as of 2026-09-13.** The domain is live and HTTPS is enforced, so
+everything on this page is ready to do. No need to touch
+[DOMAIN_AND_HOSTING_FIX.md](DOMAIN_AND_HOSTING_FIX.md) first.
 
 **Verification status: NOT VERIFIED.** Verification requires signing into a Google
 account and either editing DNS or uploading a token — it cannot be done for you, and

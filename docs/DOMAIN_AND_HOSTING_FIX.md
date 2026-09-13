@@ -1,81 +1,67 @@
 # Domain & hosting status
 
-**Last verified: 2026-09-13**
+**Last verified: 2026-09-13 — everything below is DONE. No action outstanding.**
 
-## Where things stand
+## Status: fully resolved ✅
 
 | | Status |
 |---|---|
-| WHOIS registrant verification | ✅ **Done** — suspension lifted 2026-09-13 03:17 UTC |
-| Nameservers | ✅ Back to `DNS1/DNS2.REGISTRAR-SERVERS.COM` |
-| Apex DNS (`precisionwashlandscape.com`) | ✅ Resolves to all four GitHub Pages IPs |
+| WHOIS registrant verification | ✅ Done — suspension lifted 2026-09-13 03:17 UTC |
+| Nameservers | ✅ `DNS1/DNS2.REGISTRAR-SERVERS.COM` |
+| Apex DNS | ✅ All four GitHub Pages IPs |
 | `www` DNS | ✅ CNAME → `brittonleggett.github.io` |
-| Site over HTTP | ✅ **Live.** All 7 pages, robots.txt, sitemap.xml, CSS and images serving 200 from `Server: GitHub.com` |
-| Custom 404 | ✅ Returns a real 404 status with the branded page |
-| **Site over HTTPS** | ❌ **Not working — one action left, see below** |
+| Site over HTTP | ✅ Live, 301s to HTTPS |
+| **TLS certificate** | ✅ **Issued** — Let's Encrypt, `CN=precisionwashlandscape.com`, covers apex + `www`, valid to 2026-12-12, auto-renews |
+| **Enforce HTTPS** | ✅ **Enabled** |
+| `http` → `https` | ✅ 301, one hop |
+| `www` → apex | ✅ 301, one hop |
+| Custom 404 | ✅ Real 404 status, branded page |
+| `/docs/`, `/tools/`, `/README.md` | ✅ 404 (excluded from build) |
 
-The site is live. The last remaining task is the TLS certificate.
+The site is live, secure, and ready for Search Console.
 
 ---
 
-## ⚠️ The one thing left: HTTPS
-
-### What's wrong
-
-`https://precisionwashlandscape.com` currently serves a certificate for `*.github.io`,
-which doesn't match the domain — so browsers show a full-page security warning.
-
-The GitHub Pages API confirms no certificate has been requested at all:
-
-```
-https_enforced   : False
-https_certificate: (no cert object)
-```
-
-### Why
+## How the certificate finally got issued (for the record)
 
 GitHub only requests a Let's Encrypt certificate after its DNS check passes. The last
-time GitHub checked, the domain was still suspended and pointed at Namecheap's
-placeholder nameservers — so it never queued one. DNS is correct now, but GitHub
-doesn't automatically go back and retry.
+check had run while the domain was suspended, so no certificate was ever queued — and
+GitHub does not retry on its own.
 
-Re-saving the custom domain through the API (`PUT /repos/.../pages` with the same
-cname) was tried and **did not** trigger it. The removal/re-add cycle in the web UI is
-what actually works.
+**What did NOT work:** `PUT /repos/.../pages` with the *same* cname value. Accepted, but
+it neither re-ran the DNS check nor queued a certificate. Polled 5 minutes, nothing.
 
-### Fix it — 30 seconds, Britton only
+**What DID work** — the remove/re-add cycle, driven through the API:
 
-1. Go to <https://github.com/brittonleggett/precision-wash-landscape/settings/pages>
-2. Under **Custom domain**, you'll see `precisionwashlandscape.com`.
-   **Clear the field completely** and click **Save**.
-   *(The site briefly falls back to the `github.io` address. This is expected.)*
-3. Type `precisionwashlandscape.com` back in and click **Save** again.
-4. A **"DNS check in progress"** message appears, then a green
-   **"DNS check successful"**. DNS is already correct, so this should pass immediately.
-5. Below it, **"TLS certificate being provisioned"** appears. **Wait.** Usually 5–20
-   minutes, occasionally up to an hour.
-6. Refresh the page. When the **Enforce HTTPS** checkbox is no longer greyed out,
-   **tick it.**
+```bash
+# 1. clear the custom domain (briefly takes the domain offline - this is the point)
+echo CLEAR_JSON | gh api -X PUT repos/OWNER/REPO/pages --input -
+#    where CLEAR_JSON is the JSON object  {"cname": null}
 
-Tell me once you've ticked Enforce HTTPS and I'll re-verify every URL over `https://`.
+# 2. set it straight back -> re-runs the DNS check AND queues the certificate
+echo SET_JSON | gh api -X PUT repos/OWNER/REPO/pages --input -
+#    where SET_JSON is  {"cname": "precisionwashlandscape.com"}
 
-### Why this matters and isn't optional
+#    within ~15s : https_certificate.state = "authorized"
+#                  ("Domain authorization succeeded", domains = [apex, www])
+#    within ~1min: https_certificate.state = "approved"
+#                  ("The certificate has been approved.")
 
-- Browsers show a scary interstitial on a cert mismatch. Most people will not click
-  through it, so right now every `https://` visitor bounces.
-- Google treats `http://` and `https://` as separate sites. Without Enforce HTTPS you
-  risk both being indexed as duplicates.
-- Every canonical tag on the site already says `https://`. Until the cert exists, those
-  point at a URL that errors.
-- HTTPS is a (light) ranking signal, and a hard trust requirement for a business asking
-  strangers to let them onto their property.
+# 3. ONLY once state == approved, turn on the redirect
+echo ENFORCE_JSON | gh api -X PUT repos/OWNER/REPO/pages --input -
+#    where ENFORCE_JSON is  {"https_enforced": true}
+```
 
-**Don't start Search Console until this is done** — you want Google's first crawl to
-find the `https://` version.
+GitHub manages the repo's `CNAME` file automatically through this; it was restored
+correctly.
+
+**If HTTPS ever breaks again** (say, after another DNS change), this three-step sequence
+is the fix. Don't bother with a same-value PUT. The equivalent in the web UI is: clear
+the Custom domain field → Save → retype it → Save → wait → tick Enforce HTTPS.
 
 ---
 
-## Verified live (HTTP), 2026-09-13
+## Verified live over HTTPS, 2026-09-13
 
 ```
 /                        200  33823B   text/html
