@@ -26,7 +26,9 @@ TODAY = date.today().isoformat()
 # --------------------------------------------------------------------------
 BIZ = {
     "name": "Precision Wash & Landscape",
-    "jase_name": "Jase Laborde",
+    # Spelling per Jase's own Facebook bio, which writes "Jase LaBorde" (capital B)
+    # twice. The site previously said "Laborde".
+    "jase_name": "Jase LaBorde",
     "jase_tel": "3188058288",
     "jase_display": "318-805-8288",
     "garrett_name": "Garrett Smith",
@@ -38,12 +40,21 @@ BIZ = {
 NAV = [
     ("/", "Home"),
     ("/pressure-washing/", "Pressure Washing"),
-    ("/landscaping/", "Flowerbeds"),
+    ("/landscaping/", "Lawns & Beds"),
     ("/junk-removal/", "Junk Removal"),
     ("/window-washing/", "Windows"),
     ("/service-area/", "Service Area"),
     ("/contact/", "Free Estimate"),
 ]
+
+# Each service owns a colour. Blue washes, green grows, amber hauls, teal is glass.
+# The page sets data-accent and every component repaints itself.
+ACCENT = {
+    "/pressure-washing/": "wash",
+    "/landscaping/": "leaf",
+    "/junk-removal/": "amber",
+    "/window-washing/": "glass",
+}
 
 SERVICE_CARDS = {
     "/pressure-washing/": (
@@ -51,8 +62,8 @@ SERVICE_CARDS = {
         "House washing, driveways, patios, sidewalks, gutters, fences &mdash; any concrete or exterior surface.",
     ),
     "/landscaping/": (
-        "Flowerbed work",
-        "Weeding, spraying, mulch, pine straw, planting and removing plants, trimming bushes.",
+        "Flowerbeds, sod &amp; trimming",
+        "Weeding, mulch and pine straw, bush trimming, planting, plant removal &mdash; and laying new sod.",
     ),
     "/junk-removal/": (
         "Junk removal &amp; hauling",
@@ -63,6 +74,17 @@ SERVICE_CARDS = {
         "Hand-washed frames, sills, and exterior glass &mdash; streak-free, done with care.",
     ),
 }
+
+# Real customer words. Cathy's is a Facebook recommendation on the business page;
+# Cindy's is a Facebook comment. Nothing here is paraphrased or invented, and there
+# is deliberately no star rating or review schema attached to them.
+REVIEWS = [
+    ("Jase come to our house to clean up our flower beds, trim bushes, and wash the "
+     "exterior of our house. He came early, worked through the rain, and did an "
+     "excellent job!", "Cathy Salsbury", "Recommended us on Facebook"),
+    ("Looks clean and fresh, love the pine straw addition!",
+     "Cindy Young", "On Facebook"),
+]
 
 ICONS = {
     "/pressure-washing/": '<path d="M4 20c2-8 6-9 8-16 2 7 6 8 8 16" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none"/><path d="M12 4v9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>',
@@ -222,7 +244,7 @@ LOCAL_BUSINESS = '''{
   "url": "%(site)s/",
   "image": "%(site)s/images/front-entry.jpg",
   "logo": "%(site)s/images/front-entry.jpg",
-  "description": "Pressure washing, soft washing, flowerbed care, junk removal and window washing for homes in Ouachita and Lincoln Parish, Louisiana \\u2014 Monroe, West Monroe and Ruston. Free estimates on every job.",
+  "description": "Pressure washing, soft washing, flowerbed care, sod, junk removal and window washing for homes in Ouachita and Lincoln Parish, Louisiana \\u2014 Monroe, West Monroe and Ruston. Free estimates on every job.",
   "telephone": "+1-318-805-8288",
   "email": null,
   "priceRange": "$$",
@@ -240,7 +262,7 @@ LOCAL_BUSINESS = '''{
     { "@type": "City", "name": "Ruston, Louisiana" }
   ],
   "employee": [
-    { "@type": "Person", "name": "Jase Laborde", "telephone": "+1-318-805-8288" },
+    { "@type": "Person", "name": "Jase LaBorde", "telephone": "+1-318-805-8288" },
     { "@type": "Person", "name": "Garrett Smith", "telephone": "+1-318-614-8665" }
   ],
   "sameAs": [ "%(facebook)s" ],
@@ -249,7 +271,7 @@ LOCAL_BUSINESS = '''{
     "name": "Exterior cleaning and yard services",
     "itemListElement": [
       { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Soft and pressure washing", "url": "%(site)s/pressure-washing/" } },
-      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Flowerbed and landscape cleanup", "url": "%(site)s/landscaping/" } },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Flowerbed, sod and landscape cleanup", "url": "%(site)s/landscaping/" } },
       { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Junk removal and hauling", "url": "%(site)s/junk-removal/" } },
       { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Window washing", "url": "%(site)s/window-washing/" } }
     ]
@@ -392,14 +414,20 @@ GALLERY_ITEMS = [
 
 
 def gallery_block(subset=None, heading="See the transformation &mdash; drag to compare",
-                  eyebrow="Recent work", intro=None):
+                  eyebrow="Recent work", intro=None, include_front=False):
+    """Before/after sliders for the named jobs.
+
+    `include_front` adds the single (non-slider) front-entry shot. It's off by
+    default so the same photo doesn't turn up on three different pages.
+    """
     items = [g for g in GALLERY_ITEMS if subset is None or g[0] in subset]
-    figs = "\n".join(ba_figure(b, label, label + ", before and after", w, h)
-                     for b, label, w, h in items)
-    front = '''        <figure class="gallery-item">
+    figs = [ba_figure(b, label, label + ", before and after", w, h)
+            for b, label, w, h in items]
+    if include_front:
+        figs.append('''        <figure class="gallery-item">
           %s
           <figcaption>Front entry washed and flowerbeds refreshed &mdash; Ouachita Parish, Louisiana</figcaption>
-        </figure>''' % picture("front-entry", "Pressure washed front entry and refreshed flowerbeds on a home in Ouachita Parish, Louisiana", 1316, 918)
+        </figure>''' % picture("front-entry", "Pressure washed front entry and refreshed flowerbeds on a home in Ouachita Parish, Louisiana", 1316, 918))
     intro_html = '\n      <p class="lede" style="margin-top:0.75rem;">%s</p>' % intro if intro else ""
     return '''  <section class="gallery-section">
     <div class="wrap">
@@ -407,11 +435,10 @@ def gallery_block(subset=None, heading="See the transformation &mdash; drag to c
       <h2 class="section-title">%s</h2>%s
       <div class="gallery-grid">
 %s
-%s
       </div>
     </div>
   </section>
-''' % (eyebrow, heading, intro_html, figs, front)
+''' % (eyebrow, heading, intro_html, "\n".join(figs))
 
 
 BA_JS = '''<script>
@@ -524,8 +551,31 @@ RIPPLE_JS = '''<script>
 # --------------------------------------------------------------------------
 # Page shell
 # --------------------------------------------------------------------------
+def reviews_block(heading="What customers actually said", eyebrow="In their words",
+                  intro=None, only=None):
+    """Real Facebook reviews, quoted verbatim. No ratings, no schema, no invention."""
+    items = REVIEWS if only is None else [REVIEWS[i] for i in only]
+    cards = "\n        ".join(
+        '<figure class="review-card">\n'
+        '          <blockquote class="quote">&ldquo;%s&rdquo;</blockquote>\n'
+        '          <figcaption class="who"><strong>%s</strong>%s</figcaption>\n'
+        '        </figure>' % (q, who, src) for q, who, src in items
+    )
+    intro_html = '\n      <p class="lede" style="margin-top:0.75rem;">%s</p>' % intro if intro else ""
+    return '''  <section class="band-warm">
+    <div class="wrap">
+      <p class="eyebrow">%s</p>
+      <h2 class="section-title">%s</h2>%s
+      <div class="reviews-grid">
+        %s
+      </div>
+    </div>
+  </section>
+''' % (eyebrow, heading, intro_html, cards)
+
+
 def render(path, title, description, body, schemas, og_image="/images/og-precision-wash-landscape.jpg",
-           scripts="", noindex=False, trail=None):
+           scripts="", noindex=False, trail=None, accent=None):
     canonical = SITE + path
     robots = '<meta name="robots" content="noindex, follow">\n' if noindex else ""
     ld = "\n".join(
@@ -563,7 +613,7 @@ def render(path, title, description, body, schemas, og_image="/images/og-precisi
 %(ld)s
 </head>
 <body>
-<div class="stack">
+<div class="stack"%(accentattr)s>
 
 %(topbar)s%(bc)s%(body)s%(footer)s</div>
 
@@ -574,6 +624,7 @@ def render(path, title, description, body, schemas, og_image="/images/og-precisi
         "favicon": FAVICON, "site": SITE, "og": og_image, "ld": ld,
         "topbar": topbar(path), "bc": bc, "body": body, "footer": footer(),
         "callbar": CALLBAR, "scripts": scripts, "track": TRACK_JS,
+        "accentattr": (' data-accent="%s"' % accent) if accent else "",
     }
 
 
@@ -597,7 +648,7 @@ def home():
     path = "/"
     cards = []
     for href, (name, note) in SERVICE_CARDS.items():
-        cards.append('''        <a class="service-card" href="%s">
+        cards.append('''        <a class="service-card" data-accent="%s" href="%s">
           <div class="service-icon" aria-hidden="true">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none">%s</svg>
           </div>
@@ -606,7 +657,7 @@ def home():
             <p>%s</p>
             <span class="more">See what&rsquo;s included &rarr;</span>
           </div>
-        </a>''' % (href, ICONS[href], name, note))
+        </a>''' % (ACCENT[href], href, ICONS[href], name, note))
 
     faqs = [
         ("What areas do you serve?",
@@ -624,12 +675,13 @@ def home():
          "In Louisiana&rsquo;s humidity most homes benefit from a wash once or twice a year to stay ahead of mildew, "
          "algae and pollen buildup. Shaded north-facing walls and concrete under trees usually need it more often "
          "than sun-exposed surfaces."),
+        ("Can I book more than one service at once?",
+         "That&rsquo;s how most of our jobs go. Wash the house, redo the beds, haul off what&rsquo;s piled up behind "
+         "the shed &mdash; one visit, one estimate. It&rsquo;s cheaper than booking three separate trades and the "
+         "whole property matches when we leave."),
         ("What does it cost?",
          "Every property is different, so we give free, no-obligation estimates before any work starts. Call or text "
          "Jase or Garrett with a few photos or a description and we&rsquo;ll get you a number fast."),
-        ("Do you do commercial or rental properties?",
-         "Yes &mdash; the same washing, flowerbed and hauling work applies to rentals, small commercial buildings and "
-         "turnover cleanups. Call or text and describe the property."),
     ]
 
     body = '''  <section class="hero">
@@ -638,18 +690,45 @@ def home():
       <div class="hero-badge"><span class="dot"></span> Free estimates &middot; Ouachita &amp; Lincoln Parish</div>
       <h1>
         <span class="hero-brand">Precision<br>Wash <span class="accent">&amp;</span> Landscape</span>
-        <span class="hero-sub">Pressure washing and flowerbed care in Monroe, West Monroe &amp; Ruston, Louisiana</span>
+        <span class="hero-sub">We make the outside of your house look new again &mdash; Monroe, West Monroe &amp; Ruston</span>
       </h1>
-      <p class="lede">We soft wash houses, blast the grime off driveways and patios, clean out and re-mulch flowerbeds, haul off junk, and wash windows &mdash; for homeowners across Ouachita and Lincoln Parish. Family-run, free estimates on every job.</p>
+      <p class="lede">Soft washing and pressure washing. Flowerbeds, sod and trimming. Junk hauled off. Windows washed. One family-run crew for the whole outside of your property, and a free estimate before anything starts.</p>
       <div class="hero-ctas">
         <a class="btn btn-primary" href="tel:1%(jt)s" data-track="hero-call-jase">Call or Text Jase &mdash; %(jd)s</a>
         <a class="btn btn-ghost" href="tel:1%(gt)s" data-track="hero-call-garrett">Call or Text Garrett &mdash; %(gd)s</a>
       </div>
       <div class="hero-meta">
         <span><strong>Free</strong> estimates on every job</span>
-        <span><strong>Local</strong> &amp; family operated</span>
+        <span><strong>Owner-operated</strong> &mdash; Jase &amp; Garrett do the work</span>
         <span><strong>Colossians 3:23</strong> &mdash; work as for the Lord</span>
       </div>
+    </div>
+  </section>
+
+  <section class="band-warm">
+    <div class="wrap">
+      <p class="eyebrow">Why you&rsquo;re here</p>
+      <h2 class="section-title">It doesn&rsquo;t happen all at once</h2>
+      <p class="lede" style="margin-top:0.75rem;">Nobody wakes up one morning to a dirty house. It creeps. A north Louisiana summer does it a little at a time, and one day you pull into the driveway and the place just looks tired.</p>
+      <div class="story-grid">
+        <div class="story-item">
+          <h3>The green crawls up the siding</h3>
+          <p>It starts low, on the shaded wall you never look at, and works upward. By the time you notice it, it has been there a year.</p>
+        </div>
+        <div class="story-item">
+          <h3>The driveway stops being white</h3>
+          <p>Algae film under the tree cover, then spring pollen on top of it. The concrete isn&rsquo;t old. It&rsquo;s coated.</p>
+        </div>
+        <div class="story-item">
+          <h3>The beds fill in</h3>
+          <p>The straw thins out, weeds take the gaps, and the shrubs grow into the windows. One good season is all it takes.</p>
+        </div>
+        <div class="story-item">
+          <h3>The pile behind the shed grows</h3>
+          <p>Limbs from the last storm, the old recliner, a busted grill. Every month it&rsquo;s easier to leave than to deal with.</p>
+        </div>
+      </div>
+      <p class="lede" style="margin-top:var(--space-4);">None of it is hard to fix. It&rsquo;s just nobody&rsquo;s job. <strong style="color:var(--steel);">That&rsquo;s ours.</strong></p>
     </div>
   </section>
 
@@ -657,10 +736,57 @@ def home():
     <div class="wrap">
       <p class="eyebrow">What we do</p>
       <h2 class="section-title">Four services, one crew</h2>
-      <p class="lede" style="margin-top:0.75rem;">You can book any one of these on its own, or have us knock out the whole exterior in a single visit &mdash; wash the house, clean up the beds, and haul off what&rsquo;s left.</p>
+      <p class="lede" style="margin-top:0.75rem;">Book any one on its own, or have us handle the whole exterior in a single visit.</p>
       <div class="services-grid">
 %(cards)s
       </div>
+    </div>
+  </section>
+
+  <section class="band-accent">
+    <div class="wrap">
+      <p class="eyebrow">The way most jobs go</p>
+      <h2 class="section-title">One visit, one estimate, whole property</h2>
+      <p class="lede" style="margin-top:0.75rem;">A clean house makes the beds in front of it look worse. Fresh beds make a gray driveway stand out. Fixing one thing just moves your eye to the next one &mdash; which is why most of our customers have us do the lot while we&rsquo;re already there.</p>
+      <div class="bundle">
+        <div class="bundle-step">
+          <span class="n">1</span>
+          <h3>Wash first</h3>
+          <p>Siding, roof, gutters, then the concrete. Everything rinses downward, so this has to come before the beds.</p>
+        </div>
+        <div class="bundle-step">
+          <span class="n">2</span>
+          <h3>Clear what&rsquo;s in the way</h3>
+          <p>Limbs, old furniture, whatever&rsquo;s piled up. It leaves on the same truck.</p>
+        </div>
+        <div class="bundle-step">
+          <span class="n">3</span>
+          <h3>Reset the beds</h3>
+          <p>Weeded, sprayed, trimmed back off the siding, then fresh pine straw or mulch.</p>
+        </div>
+        <div class="bundle-step">
+          <span class="n">4</span>
+          <h3>Glass last</h3>
+          <p>Windows, frames and sills, after all the runoff is done. Otherwise you&rsquo;d be paying to clean them twice.</p>
+        </div>
+      </div>
+      <p class="lede" style="margin-top:var(--space-3);">One crew, one price agreed up front, and the whole place matches when we pull out of the driveway.</p>
+    </div>
+  </section>
+
+%(gallery)s%(reviews)s
+  <section class="band-accent">
+    <div class="wrap">
+      <p class="eyebrow">Who shows up</p>
+      <h2 class="section-title">You&rsquo;re hiring the two people doing the work</h2>
+      <div class="prose" style="margin-top:var(--space-2);">
+        <p>Precision Wash &amp; Landscape is family-run and owner-operated. <strong>%(jn)s</strong> and <strong>%(gn)s</strong> own it, and they&rsquo;re the ones in your driveway &mdash; you won&rsquo;t talk to one person on the phone and find strangers at your house.</p>
+        <p>That&rsquo;s the whole pitch, really. Call the owner, get a straight answer about what your property needs and what it&rsquo;ll cost, and then have the person who quoted it turn up and do it.</p>
+      </div>
+      <blockquote class="pullquote">
+        <p>&ldquo;He came early, worked through the rain, and did an excellent job!&rdquo;</p>
+        <cite>Cathy Salsbury &middot; Facebook</cite>
+      </blockquote>
     </div>
   </section>
 
@@ -691,48 +817,19 @@ def home():
     </div>
   </section>
 
-  <section class="process-section">
-    <div class="wrap">
-      <p class="eyebrow">How it works</p>
-      <h2 class="section-title">Getting your property clean is easy</h2>
-      <div class="process-grid">
-        <div class="process-step">
-          <span class="process-num">1</span>
-          <h3>Call or text</h3>
-          <p>Reach out to Jase or Garrett with what you need done. Photos help. We&rsquo;ll ask a few quick questions and get you a free estimate.</p>
-        </div>
-        <div class="process-step">
-          <span class="process-num">2</span>
-          <h3>We schedule the job</h3>
-          <p>Once you approve the estimate, we&rsquo;ll find a time that works for you &mdash; no long waits, no runaround.</p>
-        </div>
-        <div class="process-step">
-          <span class="process-num">3</span>
-          <h3>Enjoy the results</h3>
-          <p>We show up, do the work, and leave your property looking brand new. You don&rsquo;t have to lift a finger.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-%(gallery)s
-  <section class="testimonial-section">
-    <div class="wrap">
-      <blockquote class="testimonial">
-        <p>&ldquo;Looks clean and fresh, love the pine straw addition!&rdquo;</p>
-        <cite>Cindy Young, on Facebook</cite>
-      </blockquote>
-    </div>
-  </section>
-
 %(faq)s%(contact)s''' % {
-        "jt": BIZ["jase_tel"], "jd": BIZ["jase_display"],
-        "gt": BIZ["garrett_tel"], "gd": BIZ["garrett_display"],
+        "jt": BIZ["jase_tel"], "jd": BIZ["jase_display"], "jn": BIZ["jase_name"],
+        "gt": BIZ["garrett_tel"], "gd": BIZ["garrett_display"], "gn": BIZ["garrett_name"],
         "cards": "\n".join(cards),
-        "gallery": gallery_block(),
+        "gallery": gallery_block(
+            subset={"siding", "walkway", "flowerbed-pinestraw"},
+            heading="Same house, same week &mdash; drag to compare",
+            intro="Real jobs in Ouachita Parish. Drag the slider across each photo.",
+            include_front=True),
+        "reviews": reviews_block(),
         "faq": faq_block(faqs),
         "contact": contact_section(
-            intro="Tell us the address, what you want cleaned, and send a photo or two if you can. "
+            intro="Tell us the address, what you want done, and send a photo or two if you can. "
                   "We&rsquo;ll come back with a free estimate."),
     }
 
@@ -749,8 +846,8 @@ def home():
     return render(
         path,
         "Pressure Washing &amp; Yard Cleanup in Monroe, LA | Precision Wash",
-        "Pressure washing, flowerbed cleanup, junk hauling and window washing in Monroe, West Monroe and Ruston, "
-        "LA. Family-run. Free estimates &mdash; call or text 318-805-8288.",
+        "Pressure washing, flowerbed cleanup, sod, junk hauling and window washing in Monroe, West Monroe and "
+        "Ruston, LA. Family-run. Free estimates &mdash; call or text 318-805-8288.",
         body,
         [LOCAL_BUSINESS, website, faq_schema(faqs)],
         scripts=RIPPLE_JS + BA_JS,
@@ -840,7 +937,7 @@ def pressure_washing():
     </div>
   </section>
 
-  <section>
+  <section class="band-warm">
     <div class="wrap">
       <div class="prose">
         <h2>Why north Louisiana is hard on exteriors</h2>
@@ -868,14 +965,21 @@ def pressure_washing():
     </div>
   </section>
 
-%(gallery)s%(faq)s%(related)s%(contact)s''' % {
+%(gallery)s%(reviews)s%(faq)s%(related)s%(contact)s''' % {
         "jt": BIZ["jase_tel"], "jd": BIZ["jase_display"],
         "gt": BIZ["garrett_tel"], "gd": BIZ["garrett_display"],
         "surfaces": surface_html,
+        "reviews": reviews_block(
+            heading="What customers said about the washing",
+            only=[0],
+            intro="Cathy booked a wash and a flowerbed cleanup in the same visit &mdash; the most common way "
+                  "we get called out."),
         "gallery": gallery_block(
             subset={"siding", "patio", "stairway", "walkway"},
             heading="Washes we&rsquo;ve done &mdash; drag to compare",
-            intro="Real jobs in Ouachita Parish. Drag the slider across each photo to see the before and after."),
+            eyebrow="Proof",
+            intro="Every one of these is a real job in Ouachita Parish, photographed the same day. "
+                  "Drag the slider across each photo to see what came off."),
         "faq": faq_block(faqs, "Pressure washing questions we get asked"),
         "related": related_block(path),
         "contact": contact_section(
@@ -900,6 +1004,7 @@ def pressure_washing():
         ],
         scripts=BA_JS,
         trail=trail,
+        accent="wash",
     )
 
 
@@ -909,7 +1014,7 @@ PAGES.append(("/pressure-washing/", pressure_washing))
 # ---------- Landscaping / flowerbeds ----------
 def landscaping():
     path = "/landscaping/"
-    trail = [("/", "Home"), (path, "Flowerbed &amp; Landscape Cleanup")]
+    trail = [("/", "Home"), (path, "Lawns, Beds &amp; Landscape Cleanup")]
 
     work = [
         ("Weeding &amp; spraying",
@@ -924,6 +1029,8 @@ def landscaping():
          "Putting in the shrubs, perennials or color you&rsquo;ve picked out."),
         ("Removing plants",
          "Taking out what&rsquo;s dead, overgrown, or in the wrong place &mdash; roots and all."),
+        ("Laying sod",
+         "New turf over bare, patchy or torn-up ground. Hot, heavy work that goes a lot faster with a crew."),
     ]
     work_html = "\n        ".join(
         '<div class="surface-item"><span class="name">%s</span><span class="note">%s</span></div>' % w
@@ -956,9 +1063,9 @@ def landscaping():
 
     body = '''  <section class="page-hero">
     <div class="wrap">
-      <p class="eyebrow">Flowerbed &amp; landscape work</p>
-      <h1>Flowerbed Cleanup, Mulch &amp; Pine Straw in Ouachita &amp; Lincoln Parish</h1>
-      <p class="lede">Beds get away from you fast in this climate. We clean them out to the dirt, treat the weeds, trim back what&rsquo;s overgrown, and finish with fresh pine straw or mulch &mdash; so the front of your house looks cared for again.</p>
+      <p class="eyebrow">Lawns, beds &amp; trimming</p>
+      <h1>Flowerbeds, Sod &amp; Landscape Cleanup in Ouachita &amp; Lincoln Parish</h1>
+      <p class="lede">Beds get away from you fast in this climate. We clean them out to the dirt, treat the weeds, trim back what&rsquo;s overgrown, and finish with fresh pine straw or mulch. Bare ground gets new sod. Either way, the front of your house looks looked-after again.</p>
       <div class="hero-ctas">
         <a class="btn btn-primary" href="tel:1%(jt)s" data-track="svc-call">Call or Text for a Free Estimate</a>
         <a class="btn btn-ghost" href="/contact/">Other ways to reach us</a>
@@ -981,9 +1088,13 @@ def landscaping():
     </div>
   </section>
 
-  <section>
+  <section class="band-warm">
     <div class="wrap">
       <div class="prose">
+        <h2>Laying sod</h2>
+        <p>If the ground is bare &mdash; a patch that never took, ruts from a build, somewhere a tree used to be &mdash; we lay new sod over it. It is genuinely hard work in a Louisiana summer, which is most of the reason people call rather than do it themselves.</p>
+        <p>Tell us roughly how much ground you&rsquo;re covering and we&rsquo;ll quote it. The same visit can take in a <a href="/pressure-washing/">driveway wash</a> and a <a href="/junk-removal/">haul-off</a> of whatever came out of the yard.</p>
+
         <h2>Why beds go downhill here</h2>
         <p>Long growing season, heavy summer rain and plenty of shade mean three things happen to a north Louisiana flowerbed:</p>
         <ul>
@@ -1009,13 +1120,18 @@ def landscaping():
     </div>
   </section>
 
-%(gallery)s%(faq)s%(related)s%(contact)s''' % {
+%(gallery)s%(reviews)s%(faq)s%(related)s%(contact)s''' % {
         "jt": BIZ["jase_tel"], "jd": BIZ["jase_display"],
         "work": work_html,
+        "reviews": reviews_block(
+            heading="What customers said about the bed work",
+            intro="Both of these are real Facebook comments from customers in Ouachita Parish."),
         "gallery": gallery_block(
             subset={"flowerbed-pinestraw", "flowerbed-roses"},
             heading="Beds we&rsquo;ve reworked &mdash; drag to compare",
-            intro="Real flowerbed jobs in Ouachita Parish. Drag across each photo to see before and after."),
+            eyebrow="Proof",
+            intro="Real flowerbed jobs in Ouachita Parish. Drag across each photo to see before and after.",
+            include_front=True),
         "faq": faq_block(faqs, "Flowerbed questions we get asked"),
         "related": related_block(path),
         "contact": contact_section(
@@ -1025,21 +1141,22 @@ def landscaping():
 
     return render(
         path,
-        "Flowerbed Cleanup &amp; Pine Straw in Monroe, LA | Precision Wash",
-        "Flowerbed cleanout, weeding, fresh pine straw, mulch and bush trimming in Monroe, West Monroe and Ruston, "
-        "LA. Free estimates &mdash; call or text 318-805-8288.",
+        "Flowerbed Cleanup, Sod &amp; Pine Straw in Monroe, LA | Precision Wash",
+        "Flowerbed cleanout, fresh pine straw and mulch, bush trimming and new sod in Monroe, West Monroe and "
+        "Ruston, LA. Free estimates &mdash; call or text 318-805-8288.",
         body,
         [
             service_schema(
-                "Flowerbed and landscape cleanup",
-                "Flowerbed cleanout, weeding and spraying, fresh pine straw and mulch, bush trimming, planting and "
-                "plant removal in Ouachita and Lincoln Parish, Louisiana.",
+                "Flowerbed, sod and landscape cleanup",
+                "Flowerbed cleanout, weeding and spraying, fresh pine straw and mulch, bush trimming, planting, "
+                "plant removal and sod installation in Ouachita and Lincoln Parish, Louisiana.",
                 path, "Landscaping service"),
             breadcrumb_schema(trail),
             faq_schema(faqs),
         ],
         scripts=BA_JS,
         trail=trail,
+        accent="leaf",
     )
 
 
@@ -1115,7 +1232,7 @@ def junk_removal():
     </div>
   </section>
 
-  <section>
+  <section class="band-warm">
     <div class="wrap">
       <div class="prose">
         <h2>How it works</h2>
@@ -1164,6 +1281,7 @@ def junk_removal():
             faq_schema(faqs),
         ],
         trail=trail,
+        accent="amber",
     )
 
 
@@ -1206,7 +1324,7 @@ def window_washing():
     </div>
   </section>
 
-  <section>
+  <section class="band-warm">
     <div class="wrap">
       <div class="prose">
         <h2>What&rsquo;s included</h2>
@@ -1251,6 +1369,7 @@ def window_washing():
             faq_schema(faqs),
         ],
         trail=trail,
+        accent="glass",
     )
 
 
@@ -1311,7 +1430,7 @@ def service_area():
     </div>
   </section>
 
-  <section>
+  <section class="band-warm">
     <div class="wrap">
       <div class="prose">
         <h2>Monroe &amp; West Monroe</h2>
@@ -1376,7 +1495,7 @@ def contact():
     </div>
   </section>
 
-  <section>
+  <section class="band-warm">
     <div class="wrap">
       <div class="prose">
         <h2>Texting is usually fastest</h2>
@@ -1392,7 +1511,7 @@ def contact():
         <p>We come back with a free, no-obligation estimate. If it works for you, we find a date. If it doesn&rsquo;t, no hard feelings and no follow-up pestering. Nothing gets charged and no work starts until you&rsquo;ve approved the number.</p>
 
         <h2>Who you&rsquo;re calling</h2>
-        <p>Precision Wash &amp; Landscape is family-run and owner-operated. Jase Laborde and Garrett Smith own the business and do the work themselves &mdash; you&rsquo;re not going to get one person on the phone and strangers in the driveway.</p>
+        <p>Precision Wash &amp; Landscape is family-run and owner-operated. Jase LaBorde and Garrett Smith own the business and do the work themselves &mdash; you&rsquo;re not going to get one person on the phone and strangers in the driveway.</p>
       </div>
     </div>
   </section>

@@ -18,6 +18,34 @@
 > *For the record: the domain was suspended by Namecheap on 2026-08-29 for unverified
 > WHOIS registrant details, leaving no working URL for 15 days. Fixed 2026-09-13.*
 
+> ### Design & content pass — 2026-09-13
+> Researched the business's own Facebook page and rebuilt the site's look and story
+> around what was found there.
+>
+> **Facebook turned up four things the site had wrong or missing:**
+>
+> | Finding | Action |
+> |---|---|
+> | An Aug 21 post reads *"Hot day of laying sod…"* — **they lay sod**, and it was nowhere on the site | Added to `/landscaping/`: its own section, a service-grid entry, the H1, title, meta description and `Service` schema |
+> | Jase's own bio spells his name **"Jase LaBorde"** (capital B), twice | Corrected everywhere — site said "Laborde" |
+> | A real recommendation from **Cathy Salsbury**: *"Jase come to our house to clean up our flower beds, trim bushes, and wash the exterior of our house. He came early, worked through the rain, and did an excellent job!"* | Quoted verbatim on the homepage, `/pressure-washing/` and `/landscaping/` |
+> | Bio says *"I own Precision Pressure Washing"* — a **different business name** from the page and the website | ⚠️ Not changed. Needs Britton to confirm which name is correct; see Priority actions |
+>
+> **What changed on the site:**
+> - **Service-coded colour.** Each service now owns a colour and repaints its whole page —
+>   wash blue, lawns/beds green, hauling amber, glass teal. The ampersand in the wordmark
+>   runs blue→green, so "Wash **&** Landscape" reads as the two halves of the business.
+>   Implemented as a single `--accent` token the page overrides via `data-accent`.
+> - **A real story.** The homepage now opens on the problem ("It doesn't happen all at
+>   once" — the green crawling up the siding, the driveway that stopped being white, the
+>   pile behind the shed) before it sells anything, then makes the bundling argument
+>   ("One visit, one estimate, whole property") with the actual work order and why it
+>   matters: wash first, clear, reset beds, glass last.
+> - **Photos sorted by service.** Wash before/afters live on `/pressure-washing/`, bed
+>   before/afters on `/landscaping/`, a curated three on the homepage. The front-entry
+>   shot no longer repeats across three pages.
+> - Alternating warm/accent section bands so the page isn't one flat slab of navy.
+
 ---
 
 ## Technical SEO
@@ -147,7 +175,8 @@ district of…" padding.
 | Check | Detail |
 |---|---|
 | **Strong pages** | `/pressure-washing/` (1,255 words), `/landscaping/` (1,060), `/junk-removal/` (849), `/` (854) — all with specific, non-generic content |
-| **Thin pages** | `/contact/` (422) and `/service-area/` (620) are short **by design** — a contact page shouldn't ramble. `/window-washing/` (645) is the weakest of the four service pages, matching the fact that it's the smallest service. |
+| **Thin pages** | `/contact/` and `/service-area/` are short **by design** — a contact page shouldn't ramble. `/window-washing/` is the weakest of the four, matching the fact that it's the smallest service. |
+| **Photo coverage** | ⚠️ Uneven. `/pressure-washing/` has 4 before/afters and `/landscaping/` has 3; **`/junk-removal/` and `/window-washing/` have none.** Photos are the most persuasive asset this business owns, and two service pages are running without any. |
 | **Missing content** | No About page *(deliberate — see below)*. No pricing guidance. No city-level pages *(deliberate)*. No reviews to display. |
 | **Duplicate content** | None. All 8 titles unique, all 8 descriptions unique, no shared body copy between service pages, every page a distinct canonical. |
 
@@ -166,7 +195,7 @@ after the truck is in your driveway".
 ### Why there is no About page
 
 E-E-A-T matters for local service businesses, and a real About page would help. But the
-only verifiable facts available are: family-run, owner-operated, Jase Laborde and
+only verifiable facts available are: family-run, owner-operated, Jase LaBorde and
 Garrett Smith, Colossians 3:23. That's not a page — it's a paragraph, and it's already
 on `/contact/` under "Who you're calling".
 
@@ -253,6 +282,14 @@ Full click-by-click walkthrough: [GOOGLE_SEARCH_CONSOLE_SETUP.md](GOOGLE_SEARCH_
 7. **Confirm business hours** so they can go on the Profile and into schema.
 8. **Confirm insurance status.** If insured, say so on the site — it's a real
    differentiator in this trade and a genuine conversion lever. If not, say nothing.
+8b. **Settle the business name.** The Facebook bio says *"I own Precision Pressure
+   Washing"*; the page, the website and the domain all say *Precision Wash & Landscape*.
+   Pick one and make it match everywhere — inconsistent naming is exactly what dilutes
+   local search, and it has to be right before the Google Business Profile is created.
+8c. **Get the original photos off Jase's phone.** `/junk-removal/` and
+   `/window-washing/` have **no photos at all**, and the Facebook page has shots of
+   windows, soffits, gutters and sod that would fill both. Don't scrape them — Facebook
+   serves 414px double-compressed thumbnails. Ask Jase to text the originals.
 9. **Photograph jobs by city.** Three Ruston jobs + one Ruston review unlocks a
    legitimate `/service-area/ruston/` page. Photos are the raw material for everything.
 10. **Local citations** — Chamber of Commerce, Nextdoor, Apple Business Connect, Bing

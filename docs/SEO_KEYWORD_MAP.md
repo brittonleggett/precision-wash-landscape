@@ -58,18 +58,24 @@ question and a decent long-tail query.
 | | |
 |---|---|
 | **Primary keyword** | flower bed cleanup Monroe LA |
-| **Secondary** | pine straw Monroe LA · mulch installation West Monroe · landscaping Monroe LA · flowerbed weeding · bush trimming Ruston |
+| **Secondary** | pine straw Monroe LA · **sod installation Monroe LA** · mulch installation West Monroe · landscaping Monroe LA · flowerbed weeding · bush trimming Ruston |
 | **Search intent** | Primary service. Homeowner whose beds have gotten away from them. |
 | **Target geography** | Monroe, West Monroe, Ruston |
-| **Current title** | Flowerbed Cleanup & Pine Straw in Monroe, LA \| Precision Wash *(61)* |
+| **Current title** | Flowerbed Cleanup, Sod & Pine Straw in Monroe, LA \| Precision Wash |
 | **Recommended title** | ✅ same |
-| **Current H1** | Flowerbed Cleanup, Mulch & Pine Straw in Ouachita & Lincoln Parish |
+| **Current H1** | Flowerbeds, Sod & Landscape Cleanup in Ouachita & Lincoln Parish |
 | **Recommended H1** | ✅ same |
+
+*Sod added 2026-09-13.* The business's own Facebook post ("Hot day of laying sod…")
+confirms sod installation is a real service, so it now appears on this page, in the
+service grid, the H1 and the `Service` schema. It shares this page rather than getting
+its own — there isn't enough distinct content for a standalone sod page yet, and one
+strong page beats two thin ones.
 
 *Honesty note:* "landscaping Monroe LA" is a much bigger query than "flower bed cleanup
 Monroe LA", and the URL targets it — but the page copy is explicit that the work is
-beds, mulch, straw, trimming, planting and removal. It does **not** claim lawn mowing,
-irrigation, hardscaping or design, because there's no evidence the business offers those.
+beds, mulch, straw, trimming, planting, removal and sod. It does **not** claim lawn
+mowing, irrigation, hardscaping or design, because there's no evidence of those.
 The page says "if you need something not listed, call and ask" rather than inventing a
 policy. Ranking for a term you can't deliver on just buys you wasted phone calls.
 
@@ -206,7 +212,7 @@ Until then: one honest service-area page beats three thin ones.
 
 | Term | Why not |
 |---|---|
-| lawn care / lawn mowing Monroe | No evidence the business mows. Ranking for it generates calls they'd have to turn down. |
+| lawn care / lawn mowing Monroe | No evidence the business mows. Laying sod is confirmed; recurring mowing is not. Ranking for it generates calls they'd have to turn down. |
 | landscape design / hardscaping | Not a listed service. |
 | commercial pressure washing *(as a primary)* | Mentioned honestly on-page as something they'll take, but there's no commercial portfolio to justify a dedicated page yet. |
 | gutter cleaning *(as its own page)* | Real, but covered as a surface on the pressure washing page. Not enough distinct content for a page of its own. If Search Console later shows gutter queries pulling impressions, revisit. |

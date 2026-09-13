@@ -11,9 +11,27 @@
       --steel: #eef2f6;
       --mist: #93a4b6;
       --mist-dim: #5f7182;
+      /* brand blue - fixed, used by the wordmark */
       --azure: #2f80ff;
       --azure-bright: #7fc0ff;
       --azure-dim: #17335c;
+
+      /* service accent - every component paints with these. Pages override them
+         so each service owns a colour: wash blue, landscape green, hauling
+         amber, glass teal. */
+      --accent: var(--azure);
+      --accent-bright: var(--azure-bright);
+      --accent-dim: var(--azure-dim);
+
+      /* the four service palettes */
+      --wash: #2f80ff;   --wash-bright: #7fc0ff;   --wash-dim: #17335c;
+      --leaf: #34a765;   --leaf-bright: #6fdd9f;   --leaf-dim: #123a26;
+      --amber: #d98a2b;  --amber-bright: #f2b45f;  --amber-dim: #3d2a10;
+      --glass: #2bb3c4;  --glass-bright: #74e0ec;  --glass-dim: #0f3439;
+
+      /* warmer neutrals so the page isn't one flat slab of navy */
+      --panel-warm: #161a1f;
+      --hairline: #1b242e;
 
       --font-display: "Arial Black", "Helvetica Neue", Arial, sans-serif;
       --font-body: -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -54,7 +72,7 @@
       font-weight: 700;
       letter-spacing: 0.22em;
       text-transform: uppercase;
-      color: var(--azure-bright);
+      color: var(--accent-bright);
     }
     h2.section-title {
       font-family: var(--font-display);
@@ -71,7 +89,7 @@
       font-size: 1.05rem;
     }
     a:focus-visible, button:focus-visible {
-      outline: 2px solid var(--azure-bright);
+      outline: 2px solid var(--accent-bright);
       outline-offset: 3px;
     }
   }
@@ -128,7 +146,7 @@
       font-weight: 700;
       letter-spacing: 0.18em;
       font-size: 0.6rem;
-      color: var(--azure-bright);
+      color: var(--accent-bright);
     }
     .topbar-art { flex: none; display: flex; align-items: center; }
     .topbar-art .spray-dot {
@@ -156,19 +174,19 @@
       border: 1px solid transparent;
       white-space: nowrap;
     }
-    .btn-primary { background: var(--azure); color: #fff; }
-    .btn-primary:hover { background: var(--azure-bright); }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-primary:hover { background: var(--accent-bright); }
     .btn-ghost {
       border-color: var(--panel-line);
       color: var(--steel);
     }
-    .btn-ghost:hover { border-color: var(--azure); color: var(--azure-bright); }
+    .btn-ghost:hover { border-color: var(--accent); color: var(--accent-bright); }
     /* ---------- hero ---------- */
     .hero {
       position: relative;
       overflow: hidden;
       padding-block: var(--space-6) var(--space-5);
-      background: radial-gradient(ellipse 80% 60% at 20% -10%, var(--azure-dim), transparent 60%), var(--ink-deep);
+      background: radial-gradient(ellipse 80% 60% at 20% -10%, var(--accent-dim), transparent 60%), var(--ink-deep);
     }
     .hero canvas {
       position: absolute;
@@ -195,8 +213,8 @@
     }
     .hero-badge .dot {
       width: 7px; height: 7px; border-radius: 50%;
-      background: var(--azure-bright);
-      box-shadow: 0 0 8px 1px var(--azure-bright);
+      background: var(--accent-bright);
+      box-shadow: 0 0 8px 1px var(--accent-bright);
     }
     .hero .hero-brand {
       font-family: var(--font-display);
@@ -268,10 +286,10 @@
       flex: none;
       width: 46px; height: 46px;
       border-radius: 50%;
-      border: 1.5px solid var(--azure);
+      border: 1.5px solid var(--accent);
       display: grid;
       place-items: center;
-      color: var(--azure-bright);
+      color: var(--accent-bright);
     }
     .service-card h3 {
       font-size: 1rem;
@@ -325,7 +343,7 @@
 
     /* ---------- contact / footer ---------- */
     .contact-section {
-      background: linear-gradient(180deg, transparent, var(--azure-dim) 200%);
+      background: linear-gradient(180deg, transparent, var(--accent-dim) 200%);
       border-top: 1px solid var(--panel-line);
     }
     .contact-grid {
@@ -364,7 +382,7 @@
       color: var(--steel);
     }
     .contact-card .num {
-      color: var(--azure-bright);
+      color: var(--accent-bright);
       font-weight: 700;
       font-size: 1.15rem;
       text-decoration: none;
@@ -450,7 +468,7 @@
       top: 0; bottom: 0;
       left: var(--pos);
       width: 2px;
-      background: var(--azure-bright);
+      background: var(--accent-bright);
       z-index: 3;
       transform: translateX(-1px);
       box-shadow: 0 0 10px rgba(127, 192, 255, 0.7);
@@ -463,7 +481,7 @@
       transform: translate(-50%, -50%);
       width: 36px; height: 36px;
       border-radius: 50%;
-      background: var(--azure);
+      background: var(--accent);
       border: 2px solid var(--steel);
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
     }
@@ -517,7 +535,7 @@
       width: 2.5rem;
       height: 2.5rem;
       border-radius: 50%;
-      background: var(--azure);
+      background: var(--accent);
       color: #fff;
       font-family: var(--font-display);
       font-weight: 900;
@@ -591,7 +609,7 @@
     .faq-item summary::after {
       content: '+';
       font-size: 1.3rem;
-      color: var(--azure-bright);
+      color: var(--accent-bright);
       flex: none;
       transition: transform 0.2s ease;
     }
@@ -636,19 +654,19 @@
     white-space: nowrap;
   }
   .site-nav::-webkit-scrollbar { display: none; }
-  .site-nav a:hover { color: var(--azure-bright); }
+  .site-nav a:hover { color: var(--accent-bright); }
   .site-nav a[aria-current="page"] {
     color: var(--steel);
-    border-bottom-color: var(--azure);
+    border-bottom-color: var(--accent);
   }
   .site-nav .nav-call {
-    color: var(--azure-bright);
-    border: 1px solid var(--azure-dim);
+    color: var(--accent-bright);
+    border: 1px solid var(--accent-dim);
     border-radius: 999px;
     padding: 0.4rem 0.85rem;
     font-variant-numeric: tabular-nums;
   }
-  .site-nav .nav-call:hover { border-color: var(--azure); color: #fff; }
+  .site-nav .nav-call:hover { border-color: var(--accent); color: #fff; }
   @media (max-width: 900px) {
     .topbar-art { display: none; }
   }
@@ -690,12 +708,12 @@
     color: var(--panel-line);
   }
   .breadcrumbs a { color: var(--mist); text-decoration: none; }
-  .breadcrumbs a:hover { color: var(--azure-bright); text-decoration: underline; }
+  .breadcrumbs a:hover { color: var(--accent-bright); text-decoration: underline; }
 
   /* ---------- interior page hero ---------- */
   .page-hero {
     padding-block: var(--space-4) var(--space-4);
-    background: radial-gradient(ellipse 70% 70% at 15% -20%, var(--azure-dim), transparent 62%), var(--ink-deep);
+    background: radial-gradient(ellipse 70% 70% at 15% -20%, var(--accent-dim), transparent 62%), var(--ink-deep);
     border-bottom: 1px solid var(--panel-line);
   }
   .page-hero h1 {
@@ -735,7 +753,7 @@
   .prose ul { margin: 0; padding-left: 1.15rem; color: var(--mist); }
   .prose li + li { margin-top: 0.4rem; }
   .prose strong { color: var(--steel); }
-  .prose a { color: var(--azure-bright); text-decoration: underline; text-underline-offset: 3px; }
+  .prose a { color: var(--accent-bright); text-decoration: underline; text-underline-offset: 3px; }
   .prose a:hover { color: #fff; }
 
   /* ---------- surface / checklist grid ---------- */
@@ -772,8 +790,8 @@
   /* ---------- callout ---------- */
   .callout {
     margin-top: var(--space-3);
-    border: 1px solid var(--azure-dim);
-    border-left: 3px solid var(--azure);
+    border: 1px solid var(--accent-dim);
+    border-left: 3px solid var(--accent);
     border-radius: var(--radius);
     background: color-mix(in srgb, var(--panel) 80%, transparent);
     padding: var(--space-3);
@@ -797,7 +815,7 @@
     padding: var(--space-3);
     text-decoration: none;
   }
-  .related-card:hover { border-color: var(--azure); }
+  .related-card:hover { border-color: var(--accent); }
   .related-card .name {
     display: block;
     font-weight: 800;
@@ -812,12 +830,12 @@
     font-size: 0.87rem;
     color: var(--mist);
   }
-  .related-card:hover .name { color: var(--azure-bright); }
+  .related-card:hover .name { color: var(--accent-bright); }
 
   /* ---------- service cards as links on home ---------- */
   a.service-card { text-decoration: none; }
-  a.service-card:hover { background: color-mix(in srgb, var(--panel) 80%, var(--azure-dim)); }
-  a.service-card:hover h3 { color: var(--azure-bright); }
+  a.service-card:hover { background: color-mix(in srgb, var(--panel) 80%, var(--accent-dim)); }
+  a.service-card:hover h3 { color: var(--accent-bright); }
   .service-card .more {
     display: inline-block;
     margin-top: 0.6rem;
@@ -825,7 +843,7 @@
     font-weight: 700;
     letter-spacing: 0.06em;
     text-transform: uppercase;
-    color: var(--azure-bright);
+    color: var(--accent-bright);
   }
 
   /* ---------- sticky mobile call bar ---------- */
@@ -854,7 +872,7 @@
       font-size: 0.9rem;
       text-decoration: none;
     }
-    .callbar .call { background: var(--azure); color: #fff; }
+    .callbar .call { background: var(--accent); color: #fff; }
     .callbar .text { border: 1px solid var(--panel-line); color: var(--steel); }
     .stack { padding-bottom: 72px; }
   }
@@ -868,7 +886,7 @@
     font-size: 0.82rem;
   }
   .footer-nav a { color: var(--mist); text-decoration: none; }
-  .footer-nav a:hover { color: var(--azure-bright); text-decoration: underline; }
+  .footer-nav a:hover { color: var(--accent-bright); text-decoration: underline; }
   footer .wrap { flex-direction: column; align-items: flex-start; }
   footer .footer-legal {
     display: flex;
@@ -884,7 +902,7 @@
     font-family: var(--font-display);
     font-size: clamp(3.5rem, 12vw, 7rem);
     font-weight: 900;
-    color: var(--azure-dim);
+    color: var(--accent-dim);
     line-height: 1;
   }
 }
@@ -905,4 +923,171 @@
     max-width: min(34ch, 100%);
     text-wrap: balance;
   }
+}
+
+/* ==========================================================================
+   Service colour themes + story / proof components
+   ========================================================================== */
+@layer components {
+
+  [data-accent="wash"]  { --accent: var(--wash);  --accent-bright: var(--wash-bright);  --accent-dim: var(--wash-dim); }
+  [data-accent="leaf"]  { --accent: var(--leaf);  --accent-bright: var(--leaf-bright);  --accent-dim: var(--leaf-dim); }
+  [data-accent="amber"] { --accent: var(--amber); --accent-bright: var(--amber-bright); --accent-dim: var(--amber-dim); }
+  [data-accent="glass"] { --accent: var(--glass); --accent-bright: var(--glass-bright); --accent-dim: var(--glass-dim); }
+
+  /* each home card wears its own service colour */
+  .service-card { transition: background 0.18s ease; }
+  .service-icon { transition: background 0.18s ease, box-shadow 0.18s ease; }
+  a.service-card[data-accent]:hover { background: color-mix(in srgb, var(--panel) 82%, var(--accent-dim)); }
+  a.service-card[data-accent]:hover h3 { color: var(--accent-bright); }
+  a.service-card[data-accent]:hover .service-icon {
+    background: color-mix(in srgb, var(--accent-dim) 70%, transparent);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent-dim) 45%, transparent);
+  }
+
+  /* the ampersand carries both halves of the business: wash blue, landscape green */
+  .hero .hero-brand .accent {
+    background: linear-gradient(100deg,
+      var(--wash) 0%, var(--wash) 26%, var(--wash-bright) 40%,
+      #ffffff 50%, var(--leaf-bright) 60%, var(--leaf) 76%, var(--leaf) 100%);
+    background-size: 220% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* ---------- alternating surfaces ---------- */
+  .band-warm {
+    background: var(--panel-warm);
+    border-block: 1px solid var(--hairline);
+  }
+  .band-accent {
+    background:
+      radial-gradient(ellipse 65% 110% at 88% 40%, color-mix(in srgb, var(--accent-dim) 60%, transparent), transparent 70%),
+      var(--panel-warm);
+    border-block: 1px solid var(--hairline);
+  }
+
+  /* ---------- story ---------- */
+  .story-grid {
+    margin-top: var(--space-4);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--space-3);
+  }
+  .story-item { position: relative; padding-left: 1.5rem; }
+  .story-item::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 0.45rem;
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent-dim) 60%, transparent);
+  }
+  .story-item h3 {
+    font-size: 0.95rem;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--steel);
+  }
+  .story-item p { margin-top: 0.4rem; color: var(--mist); font-size: 0.93rem; line-height: 1.6; }
+
+  /* ---------- pull quote ---------- */
+  .pullquote {
+    margin: var(--space-4) 0 0;
+    border-left: 3px solid var(--accent);
+    padding: 0.2rem 0 0.2rem var(--space-3);
+    max-width: 46ch;
+  }
+  .pullquote p {
+    font-size: clamp(1.15rem, 2.4vw, 1.45rem);
+    line-height: 1.4;
+    color: var(--steel);
+    font-weight: 600;
+    text-wrap: balance;
+  }
+  .pullquote cite {
+    display: block;
+    margin-top: 0.7rem;
+    font-style: normal;
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--mist-dim);
+  }
+
+  /* ---------- review cards ---------- */
+  .reviews-grid {
+    margin-top: var(--space-4);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+    gap: var(--space-2);
+  }
+  .review-card {
+    border: 1px solid var(--panel-line);
+    border-top: 2px solid var(--accent);
+    border-radius: var(--radius);
+    background: var(--panel);
+    padding: var(--space-3);
+    display: flex;
+    flex-direction: column;
+  }
+  .review-card .quote { color: var(--steel); font-size: 0.98rem; line-height: 1.6; }
+  .review-card .who {
+    margin-top: auto;
+    padding-top: var(--space-2);
+    font-size: 0.8rem;
+    color: var(--mist-dim);
+  }
+  .review-card .who strong { display: block; color: var(--mist); font-size: 0.88rem; }
+
+  /* ---------- bundle strip ---------- */
+  .bundle {
+    margin-top: var(--space-4);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1px;
+    background: var(--panel-line);
+    border: 1px solid var(--panel-line);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .bundle-step { background: var(--panel); padding: var(--space-3); }
+  .bundle-step .n {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    font-size: 0.78rem;
+    font-weight: 800;
+    color: var(--ink);
+    background: var(--accent-bright);
+  }
+  .bundle-step h3 {
+    margin-top: 0.7rem;
+    font-size: 0.92rem;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--steel);
+  }
+  .bundle-step p { margin-top: 0.35rem; font-size: 0.88rem; color: var(--mist); line-height: 1.55; }
+
+  /* ---------- misc ---------- */
+  .gallery-item figcaption { border-top: 2px solid var(--accent-dim); }
+
+  .photos-wanted {
+    margin-top: var(--space-3);
+    border: 1px dashed var(--panel-line);
+    border-radius: var(--radius);
+    padding: var(--space-3);
+    max-width: var(--measure);
+    color: var(--mist-dim);
+    font-size: 0.9rem;
+  }
+
+  .eyebrow { color: var(--accent-bright); }
 }
