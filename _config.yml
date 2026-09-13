@@ -1,0 +1,9 @@
+# GitHub Pages (legacy Jekyll build) configuration.
+#
+# The only job of this file is to keep repo housekeeping out of the published
+# site. Every .html file here is static (no YAML front matter anywhere), so
+# Jekyll copies them verbatim and nothing else about the build changes.
+exclude:
+  - docs
+  - tools
+  - README.md
