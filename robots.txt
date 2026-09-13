@@ -1,4 +1,10 @@
 User-agent: *
 Allow: /
 
+# Every customer-facing page is meant to be indexed. The two folders below are
+# repo housekeeping (SEO notes and the page generator), not site content, and
+# nothing on the site links to them.
+Disallow: /docs/
+Disallow: /tools/
+
 Sitemap: https://precisionwashlandscape.com/sitemap.xml
