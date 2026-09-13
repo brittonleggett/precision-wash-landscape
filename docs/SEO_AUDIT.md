@@ -4,20 +4,22 @@
 **Site:** https://precisionwashlandscape.com (GitHub Pages, static HTML)
 **Repo:** brittonleggett/precision-wash-landscape
 
-> ### ⚠️ Headline finding
-> **The production site does not load for anyone.** The domain was suspended by
-> Namecheap on 2026-08-29 for unverified WHOIS registrant contact details. Its
-> nameservers are now `FAILED-WHOIS-VERIFICATION.NAMECHEAP.COM` /
-> `VERIFY-CONTACT-DETAILS.NAMECHEAP.COM`, and because the repo's `CNAME` file redirects
-> the `github.io` address to the custom domain, **there is currently no working URL for
-> this site at all.**
+> ### Status update — 2026-09-13
+> **The domain suspension is fixed and the site is live over HTTP.** Britton verified
+> the WHOIS registrant contact on 2026-09-13; nameservers returned to normal, DNS now
+> points at GitHub Pages, and all 7 pages plus robots.txt, sitemap.xml, CSS and images
+> were re-verified serving 200 from the real domain, byte-identical to the local build.
 >
-> Everything else in this audit is moot until that's fixed. It takes about five minutes
-> and only Britton can do it → [DOMAIN_AND_HOSTING_FIX.md](DOMAIN_AND_HOSTING_FIX.md).
+> **One hosting task remains: HTTPS.** `https://` still serves a `*.github.io`
+> certificate because GitHub never queued one (its DNS check last ran while the domain
+> was dead). Fix is a 30-second remove/re-add of the custom domain in GitHub Pages
+> settings → [DOMAIN_AND_HOSTING_FIX.md](DOMAIN_AND_HOSTING_FIX.md).
+> **Do not start Search Console until HTTPS works** — Google's first crawl should find
+> the `https://` version.
 >
-> **All on-site verification below was therefore done against a local server running the
-> exact production files, in real Chrome, not against the live domain.** The live domain
-> must be re-checked once it resolves.
+> *Original finding, for the record: the domain was suspended by Namecheap on 2026-08-29
+> for unverified WHOIS registrant details, leaving no working URL for the site for 15
+> days.*
 
 ---
 
@@ -25,11 +27,11 @@
 
 | Check | Status | Detail |
 |---|---|---|
-| **HTTP status** | ⚠️ Blocked | Cannot test live. All 8 pages return 200 locally; `/nope/` correctly 404s. |
-| **HTTPS** | ❌ Broken | No HTTPS at all — port 443 refuses connections. "Enforce HTTPS" must be enabled on GitHub Pages once DNS is fixed. |
-| **Canonical domain** | ⚠️ Undecided in practice | `CNAME` and all canonical tags say apex (`precisionwashlandscape.com`, no `www`) — correct and consistent. Cannot be enforced until DNS resolves. |
-| **Robots** | ✅ Good | `/robots.txt` allows all crawlers, disallows only `/docs/` and `/tools/` (repo housekeeping, unlinked), and references the sitemap on the last line. |
-| **Sitemap** | ✅ Good | 7 canonical, indexable, 200-status URLs with `lastmod`. No redirects, no 404s, no noindex pages, no dev routes. Verified programmatically against the canonical tag of every page — zero drift in either direction. |
+| **HTTP status** | ✅ Verified live | All 7 pages 200 over HTTP on the real domain, byte-identical to local. Unknown paths return a real 404 with the branded page. `/docs/`, `/tools/`, `/README.md` correctly 404 (excluded from the build). |
+| **HTTPS** | ❌ **Outstanding** | Serves a `*.github.io` cert — mismatch, so browsers warn. GitHub has no certificate object for this domain yet. Needs a custom-domain remove/re-add in Pages settings, then tick Enforce HTTPS. **The last blocking item.** |
+| **Canonical domain** | ✅ Correct, ⚠️ not yet enforced | Apex (`precisionwashlandscape.com`, no `www`) in `CNAME` and every canonical tag. DNS for apex + `www` both verified correct. `http`→`https` collapse waits on Enforce HTTPS. |
+| **Robots** | ✅ Verified live | `/robots.txt` allows all crawlers, disallows only `/docs/` and `/tools/` (repo housekeeping, unlinked), and references the sitemap on the last line. |
+| **Sitemap** | ✅ Verified live | 7 canonical, indexable, 200-status URLs with `lastmod`. No redirects, no 404s, no noindex pages, no dev routes. Verified programmatically against the canonical tag of every page — zero drift in either direction. |
 | **Noindex issues** | ✅ Correct | Exactly one page is `noindex, follow` — `/404.html` — and it's correctly excluded from the sitemap. No accidental noindex anywhere. |
 | **Structured data** | ✅ Good | 19 JSON-LD blocks across 8 pages, **all parse-validated**. See breakdown below. |
 | **Mobile** | ✅ Fixed | Was badly broken: **247px of horizontal overflow at 375px wide**, caused by the nav bar. Measured before/after in-browser; now 0px overflow at 320 / 375 / 390 / 480 / 600 / 700 / 860px. |
@@ -223,8 +225,11 @@ actually present.
 | Check | Status |
 |---|---|
 | **Verification** | ❌ Not verified. Requires Britton's Google login + a DNS TXT record. Not faked. |
-| **Sitemap submitted** | ❌ Not submitted — can't be, until the property is verified and the domain resolves. |
-| **Indexing status** | ❌ Unknown. The site has never been crawlable at this domain, so it is almost certainly not indexed at all. |
+| **Sitemap submitted** | ❌ Not submitted. |
+| **Indexing status** | ❌ Almost certainly not indexed — the domain was unreachable for its first 15 days of life, so Google has had nothing to crawl. |
+
+**Sequencing:** finish HTTPS first, then verify Search Console. Verifying while the site
+only answers on `http://` risks Google settling on the wrong protocol as canonical.
 
 Full click-by-click walkthrough: [GOOGLE_SEARCH_CONSOLE_SETUP.md](GOOGLE_SEARCH_CONSOLE_SETUP.md)
 
@@ -234,10 +239,11 @@ Full click-by-click walkthrough: [GOOGLE_SEARCH_CONSOLE_SETUP.md](GOOGLE_SEARCH_
 
 ### HIGH — do these first
 
-1. **Un-suspend the domain.** Verify WHOIS registrant email at Namecheap. Nothing else
-   matters until this is done. *(Britton, ~5 min)* →
-   [DOMAIN_AND_HOSTING_FIX.md](DOMAIN_AND_HOSTING_FIX.md)
-2. **Point DNS at GitHub Pages and enable Enforce HTTPS.** *(Britton, ~15 min + DNS wait)*
+1. ~~**Un-suspend the domain.**~~ ✅ **Done 2026-09-13.**
+2. **Get HTTPS working.** DNS is already correct. Remove and re-add the custom domain in
+   GitHub Pages settings to make GitHub issue the certificate, then tick Enforce HTTPS.
+   *(Britton, 30 seconds + up to an hour of waiting)* →
+   [DOMAIN_AND_HOSTING_FIX.md](DOMAIN_AND_HOSTING_FIX.md) — **this is now the blocker**
 3. **Create the Google Business Profile.** For a service-area home-services business
    this outranks the website in importance for actual phone calls. *(Britton, ~30 min)* →
    [GOOGLE_BUSINESS_PROFILE.md](GOOGLE_BUSINESS_PROFILE.md)
@@ -273,8 +279,8 @@ Full click-by-click walkthrough: [GOOGLE_SEARCH_CONSOLE_SETUP.md](GOOGLE_SEARCH_
 
 | Goal | Status |
 |---|---|
-| **Crawlable** | ✅ Code-ready — ❌ blocked by the dead domain |
-| **Indexable** | ✅ Code-ready — ❌ blocked by the dead domain |
+| **Crawlable** | ✅ **Verified live over HTTP** — ⚠️ HTTPS pending |
+| **Indexable** | ✅ **Verified live over HTTP** — ⚠️ HTTPS pending |
 | **Fast** | ✅ 66ms DCL, 1 request, CLS 0, no fonts, no third-party JS |
 | **Mobile-friendly** | ✅ Fixed a real 247px overflow bug; verified 320–860px |
 | **Locally relevant** | ✅ Genuine regional content, honest service area |

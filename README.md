@@ -3,10 +3,10 @@
 Static site for **precisionwashlandscape.com**, served by GitHub Pages from the root of
 this repository.
 
-> ## ⚠️ The site is currently offline
-> The domain is suspended by Namecheap over unverified WHOIS contact details, so there
-> is no working URL for this site right now. It's a ~5-minute fix and only Britton can
-> do it: **[docs/DOMAIN_AND_HOSTING_FIX.md](docs/DOMAIN_AND_HOSTING_FIX.md)**
+> ## ⚠️ HTTPS is not working yet
+> The site is **live over HTTP** (the domain suspension was fixed 2026-09-13), but
+> `https://` still serves a mismatched `*.github.io` certificate. One 30-second fix in
+> GitHub Pages settings: **[docs/DOMAIN_AND_HOSTING_FIX.md](docs/DOMAIN_AND_HOSTING_FIX.md)**
 
 ---
 
@@ -74,6 +74,7 @@ Python 3 with no third-party packages. `tools/build.py` uses only the standard l
 ├── robots.txt               generated
 ├── sitemap.xml              generated
 ├── CNAME                    custom domain for GitHub Pages — leave alone
+├── _config.yml              keeps docs/ and tools/ out of the published site
 ├── assets/
 │   └── site.css             hand-edited
 ├── images/
@@ -86,7 +87,9 @@ Python 3 with no third-party packages. `tools/build.py` uses only the standard l
 └── docs/                    SEO notes — not part of the website
 ```
 
-`docs/` and `tools/` are excluded in `robots.txt` and nothing links to them.
+`docs/`, `tools/` and `README.md` are excluded from the published site by `_config.yml`,
+disallowed in `robots.txt`, and unlinked from any page. Verified returning 404 on the
+live domain.
 
 ---
 
@@ -133,7 +136,7 @@ Start here:
 
 | Doc | What it covers |
 |---|---|
-| **[DOMAIN_AND_HOSTING_FIX.md](docs/DOMAIN_AND_HOSTING_FIX.md)** | ⚠️ **Read first** — why the site is down and how to fix it |
+| **[DOMAIN_AND_HOSTING_FIX.md](docs/DOMAIN_AND_HOSTING_FIX.md)** | ⚠️ **Read first** — hosting status and the outstanding HTTPS fix |
 | [SEO_AUDIT.md](docs/SEO_AUDIT.md) | Full audit, what changed, prioritised actions |
 | [GOOGLE_SEARCH_CONSOLE_SETUP.md](docs/GOOGLE_SEARCH_CONSOLE_SETUP.md) | Verification, sitemap, indexing, monitoring, Bing |
 | [GOOGLE_BUSINESS_PROFILE.md](docs/GOOGLE_BUSINESS_PROFILE.md) | Profile setup, NAP consistency, getting reviews ethically |
